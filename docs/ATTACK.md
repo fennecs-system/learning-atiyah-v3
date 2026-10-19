@@ -111,3 +111,13 @@ formalizes that exact error: the wrong formula represents `(-x,y)`.
 This proof project and the interpretability project have different success
 criteria. No training run, grokking result, or general conjecture proof is
 claimed by this repository.
+
+## 6. Distant-point boundary milestone
+
+Follow [DP1–DP6 in the English proof](proofs/DISTANT_POINT.md). The algebraic
+boundary family avoids the determinant divisor when the core already satisfies
+C1. Direction convergence, the boundary determinant, and openness are checked.
+Next construct local continuous complex lifts, prove gauge invariance, and
+identify the geometric coefficient limit. This conditional extension does not
+prove arbitrary cores or every finite spike length. For real coefficients the
+existing determinant-to-pointed-cells bridge then applies.

@@ -62,12 +62,29 @@ must still be completed before claiming an end-to-end formalization of those red
 for C1. The real finite signed-fan picture does not directly generalize to complex
 absolute values, which involve continuous phases.
 
+## Distant-point subcase
+
+The [formal English proof](docs/proofs/DISTANT_POINT.md) shows: if a fixed core
+satisfies C1, adding a point sufficiently far along a fixed ray preserves C1.
+Lean checks direction convergence, independence and nonzero determinant of the
+boundary polynomial family, and determinant stability. The continuous lift,
+gauge, and geometric coefficient-convergence bridges remain to be formalized;
+the complete geometric theorem is not yet checked end to end.
+
+| Module | Checked content |
+| --- | --- |
+| `FarDirection` | Direction convergence along a ray and eventual avoidance of a finite core. |
+| `SpikeLimit` | Evaluation/cancellation proof of boundary independence, with degree bounds giving a nonzero square coefficient determinant. |
+| `DeterminantStability` | Eventual determinant nonvanishing under matrix convergence, a real threshold, and the corresponding real signed-cell consequence. |
+
 ## Agent workflow
 
 The project uses several agents to propose proofs and repair them against Lean's
 compiler and kernel. No model parameters are trained; this is compiler-guided
 proof search, not an RL training run. A successful reduction is not counted as a
 proof of its remaining geometric premise.
+
+Maintain the English and Lean arguments together using [the proof workflow](docs/PROOF_WORKFLOW.md).
 
 See [the attack plan](docs/ATTACK.md) and [the session record](docs/SESSION.md).
 

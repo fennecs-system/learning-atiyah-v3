@@ -48,3 +48,23 @@ ATTACK.md for the exact gaps between current modules and the general theorem.
   existence, the planar degree bound, and positive determinant/pointed cells for
   every pair of distinct planar points.
 - No general C1, n=3, n=4, or arbitrary-n collinear proof is claimed.
+
+## Distant-point follow-up — 2026-10-19
+
+The user requested a formal-English proof guide corrected in both directions
+by Lean, and a subcase motivated by one distant point in the old ML samples.
+Three proof agents developed the algebraic boundary, determinant stability, and
+normalized-direction limit; a mathematical review supplied the complete paper
+argument and literature provenance. An environment agent restored the pinned
+local toolchain.
+
+Added `docs/PROOF_WORKFLOW.md` and the step-indexed distant-point guide. The
+conditional paper theorem assumes independence of the fixed core and gives
+independence after adding a point sufficiently far along a fixed ray. Its full
+geometric Lean statement is not yet proved: local continuous complex lifts,
+gauge comparison, and coefficient convergence remain explicit obligations.
+
+Validation: complete `scripts/check.sh` passed; 152 public project declarations
+passed the transitive axiom audit. Three new modules add 18 named theorems.
+No `sorry`, custom axioms, or conjecture assumptions were added as declarations.
+The core independence hypothesis is explicit in the conditional extension.

@@ -17,3 +17,13 @@ Read README.md and docs/ATTACK.md before changing mathematical scope.
 - Before delivery run scripts/check.sh and report the exact checked commit.
 - Keep README status and remaining bridges accurate. No claim of solving C1
   without a theorem for all configurations and an audited chain to its definition.
+
+## English/Lean synchronization
+
+- Follow docs/PROOF_WORKFLOW.md. Before a new proof attack, write a formal-English
+  statement with stable step IDs and a correspondence ledger.
+- Update the English guide when Lean exposes missing hypotheses or changes the
+  statement. Conversely review that each Lean theorem actually discharges its
+  English obligation rather than a weaker or merely conditional substitute.
+- Keep complete paper proofs, checked components, and end-to-end checked
+  configuration cases distinctly labelled.
