@@ -1,5 +1,11 @@
 # Proof attack through cells and the determinant divisor
 
+Status update, 2026-10-19: [Eickhoff v3](https://zenodo.org/records/23024340)
+claims counterexamples to universal C1. The project is auditing this claim.
+Treat the universal routes below as research hypotheses, not an assumption that
+C1 is true. Conditional cluster theorems remain meaningful. See the independent
+research and review reports for objections and reproducible checks.
+
 ## 1. The algebraic-geometric formulation
 
 For a configuration, pairwise directions determine projective linear forms

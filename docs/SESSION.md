@@ -100,3 +100,41 @@ configuration and C1 definitions were not weakened or changed.
 Four new Lean modules contain 32 public theorem declarations. The English guide
 and independent review reports record the exact proof and scope. General C1,
 C2, effective thresholds, and all finite spike lengths remain unproved here.
+
+## Two-cluster gluing, fresh attacks, and a status correction — 2026-10-19
+
+User requested skeptical agents, independent attack approaches, and fresh-context
+physics/QFT investigation. Three implementation agents handled boundary algebra,
+geometry/convergence, and physical lift/gauge assembly; two independent reviewers
+checked the cluster proof and physics proposal. Fresh agents independently explored
+physics and geometry without first reading the cluster strategy.
+
+Checked outcome: `TwoCluster.two_cluster_extension` proves an exact actual
+configuration A ∪ (Ru+B), for fixed C1 cores A,B and any nonzero u, satisfies
+C1 for every sufficiently large R and every displacement lift choice. Empty
+cores and both Hopf poles remain included. `ReflectionObstruction` separately
+proves a 3×3 candidate correlation kernel cannot be positive semidefinite when
+t≠1, ruling out one raw-determinant QFT proposal, not all physical approaches.
+
+Important literature correction: fresh search found Jan Eickhoff's Singular
+Atiyah Configurations v3 (28 September 2026), claiming general C1 counterexamples.
+Earlier unqualified statements that general C1 remained open missed this source.
+The project has not formally verified its counterexamples. Independent manuscript
+review found no decisive flaw, and a reproducible exact interval calculation now
+certifies a negative boundary expression for its 84-point planar-family parameters.
+The physical-matrix identification, positive initial endpoint, and interior
+singular-configuration argument are not certified by that script. Conditional
+fixed-core separation is compatible with the claim.
+
+Validation: integrated `scripts/check.sh` passed for 226 public declarations.
+An independent reviewer ran the cluster-only build/audit (219 declarations),
+and the physics reviewer compiled/audited its 7 declarations. Root additionally
+ran the exact integer-only boundary script successfully. No admissions/custom
+axioms or altered original configuration definitions were introduced.
+
+Saved a simplified separation explanation, the English two-cluster proof,
+separate physics and geometry reports, and both review reports. Binary-tree
+recursion is a mathematical iteration principle; no tree constructor or uniform
+scale ratio has been formalized yet. Next priorities are exact geometric
+verification of the reported singular family and restricted nonvanishing/
+quantitative spectral bounds, rather than assuming universal positivity.
