@@ -68,3 +68,35 @@ Validation: complete `scripts/check.sh` passed; 152 public project declarations
 passed the transitive axiom audit. Three new modules add 18 named theorems.
 No `sorry`, custom axioms, or conjecture assumptions were added as declarations.
 The core independence hypothesis is explicit in the conditional extension.
+
+## End-to-end distant-point proof — 2026-10-19
+
+At the user's request, three minimally seeded implementation agents explored
+separate gauge, local-section, and homogeneous-limit approaches. Two separate
+judgment agents challenged mathematical scope and kernel/statement validity;
+the integrator constructed the actual enlarged configuration and final theorem.
+Skeptical instructions treated claimed bridges as unproved and sought
+counterexamples or hidden assumptions, without asserting false facts.
+
+Result: `Atiyah.DistantPoint.distant_point_extension` is an end-to-end checked
+conditional theorem for actual configurations. Given a fixed independent core
+and any nonzero ray direction, all sufficiently large ray parameters give
+independent point forms for every displacement Hopf lift family. The theorem
+also proves existence of those lift families and fixes the new points exactly.
+
+The implementation improved the English guide: direct homogeneous evaluation
+handles poles, and a finite coefficient witness proves stability without a
+degree/basis bridge. It also distinguishes the product norm on ℝ × ℂ from the
+Euclidean radius used in the Hopf formula. Gauge invariance and square-root
+physical scaling are now proved, not remaining assumptions.
+
+Validation: complete local `scripts/check.sh` passed, including 197 public
+project declarations in the transitive axiom audit. Both judgment agents
+independently compiled the final theorem and accepted its mathematical scope.
+The final theorem's axiom dependencies are exactly `propext`, `Classical.choice`,
+and `Quot.sound`. No admissions or custom axioms were added. The original
+configuration and C1 definitions were not weakened or changed.
+
+Four new Lean modules contain 32 public theorem declarations. The English guide
+and independent review reports record the exact proof and scope. General C1,
+C2, effective thresholds, and all finite spike lengths remain unproved here.

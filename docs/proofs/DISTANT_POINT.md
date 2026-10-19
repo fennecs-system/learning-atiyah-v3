@@ -1,181 +1,178 @@
 # Distant-point extension: formal English proof and Lean correspondence
 
-Status: complete mathematical argument below; only the explicitly listed Lean
-components are formalized. This is **not yet an end-to-end Lean theorem about
-geometric distant-point configurations**. The document is a proof guide with
-precise obligations, not an axiom used by the library.
+Status: **end-to-end checked conditional configuration theorem**:
+`Atiyah.DistantPoint.distant_point_extension`. The only independence hypothesis
+is C1 for the fixed core. This does not prove general C1 or the C2 inequality.
 
 ## Statement (DP)
 
-Let m ≥ 1 and let a₁,…,aₘ be fixed distinct points of Euclidean three-space.
-Assume that their Atiyah point polynomials are linearly independent (C1 for
-this particular core configuration). Fix a unit vector u. Then there is R₀,
-depending on the core and u, such that for every real R > R₀ the configuration
+Let a₁,…,aₘ be a fixed configuration of distinct points in ℝ × ℂ, and suppose
+its Atiyah point forms are independent for every choice of Hopf lifts. Let
+u ≠ 0. There exists R₀ such that for every real R > R₀, the enlarged
+configuration (Ru,a₁,…,aₘ) has distinct points, admits Hopf lifts, and has
+independent point forms for **every** choice of those lifts.
 
-    a₁,…,aₘ,Ru
+The threshold depends on the core and the ray direction. It is existential,
+not an effective numerical bound. No claim is made about every finite spike
+length or an arbitrary core whose independence is unknown. Lean also covers
+the empty core, although the intended application has m ≥ 1.
 
-has distinct points and linearly independent Atiyah point polynomials.
-
-This is the precise meaning of a fixed core with one sufficiently distant
-point. It does not assert independence for every finite spike length or remove
-the hypothesis on the core. It gives no effective numerical threshold and does
-not prove the stronger normalized determinant inequality C2.
+`Configuration.C1 m` is the universal conjecture for all m-point configurations.
+The main theorem assumes its per-configuration assertion for the fixed core;
+`distant_point_extension_of_c1` supplies the universal C1 hypothesis as a
+corollary. Neither theorem asserts `C1 (m+1)`.
 
 ## Conventions
 
-Use homogeneous binary forms V_d = H⁰(ℙ¹_ℂ, O(d)), a complex vector space of
-dimension d+1. Each directed displacement determines a projective linear form;
-choose nonzero representatives. Multiplying representatives by nonzero scalars
-rescales point forms and preserves linear independence.
+A spinor v=(a,b) gives the binary form L_v=aX₀+bX₁. Its Hopf image is
+((|a|²−|b|²)/2, a conjugate(b)). Define J(a,b)=(-conjugate(b),conjugate(a));
+then Hopf(Jv)=−Hopf(v). Point forms are products over outgoing edges.
 
-Fix representatives q₁,…,qₘ ∈ V_{m−1} for the core. By the hypothesis and the
-dimension count these form a basis. The proof uses a local section of the
-projective direction map near u, not a nonexistent global continuous section
-of the Hopf fibration.
+The code uses the ambient binary polynomial ring. Its homogeneous degree-m
+part is H⁰(ℙ¹, O(m)), but no sheaf implementation is needed. The default norm
+on ℝ × ℂ is the product/max norm, not the Euclidean norm. The proof uses only
+the usual finite-dimensional topology and a nonzero direction; it does not
+identify that norm with Euclidean length.
 
 ## Proof, with stable step identifiers
 
 ### DP1 — A parameter at infinity
 
-Put t = 1/R. For each core point define
+For each core point define dᵢ(R)=u−R⁻¹aᵢ. Then dᵢ(R)→u as R→+∞. Since u≠0,
+each dᵢ(R) is eventually nonzero, simultaneously for all i by finiteness.
+For positive R the physical displacement Ru−aᵢ is R dᵢ(R). This also proves
+the new point eventually avoids the entire core.
 
-    dᵢ(t) = (u − t aᵢ) / ‖u − t aᵢ‖.
-
-For t > 0 this is the unit direction from aᵢ to Ru: multiplying a nonzero vector
-by the positive scalar R does not change its normalization. At t=0 the
-unnormalized vector is u, whose norm is 1. Thus every dᵢ extends continuously
-to t=0, with dᵢ(0)=u. Since there are finitely many points, a single neighborhood
-works for all i.
+The previous normalized-direction proof remains available in `FarDirection`,
+but normalization is unnecessary in the integrated proof.
 
 ### DP2 — Local lift choices
 
-Choose a local continuous section assigning a nonzero linear form to directions
-near u. Let Lᵢ(t) be the form of dᵢ(t), and let L be its value at u. Choose the
-opposite directed factors Mᵢ(t) by antipodal conjugation of these lifts. Then
+Choose a local section s of the Hopf map near u, continuous at u, with
+Hopf(s(q))=q throughout a neighborhood. Its construction uses one of two
+explicit square-root charts. The two charts cover every nonzero displacement,
+including both poles; no global continuous section is asserted.
 
-    Lᵢ(t) → L,     Mᵢ(t) → M,
+Set v=s(u) and bᵢ(R)=s(dᵢ(R)). Then v≠0, bᵢ(R)→v, and eventually
+Hopf(bᵢ(R))=dᵢ(R) for every i. Continuity of J gives Jbᵢ(R)→Jv.
 
-where L and M are nonproportional linear forms. This nonproportionality follows
-from the antipodal relation; for spinors (a,b) and (−conj b,conj a), the pair
-determinant is |a|²+|b|² > 0.
+Choose any actual core lift family, with independent point forms qᵢ.
+For R>0 the actual old-to-new lift is √R bᵢ(R); the reverse lift is
+√R Jbᵢ(R), because Hopf(√R w)=R Hopf(w). Keep all old core lifts fixed.
+These choices form an actual lift family for the enlarged configuration.
 
-Local sections exist in either standard affine chart of ℙ¹. If one pole lies in
-a chosen chart, use the other chart. No direction is excluded. Replacing the
-normalized directional lifts by the displacement-sized lifts used in the code
-only introduces nonzero factors; this must be justified by a formal lift-choice
-invariance lemma before applying this proof to the repository's C1 definition.
+### DP3 — Limit of normalized point forms
 
-### DP3 — Limit of point forms
+Divide the new point form by (√R)^m and each old point form by √R. These
+nonzero scalings yield
 
-In these representatives the m old point forms and the new point form are
+    F_*(R) = ∏ᵢ L_{Jbᵢ(R)},       Fᵢ(R) = L_{bᵢ(R)} qᵢ.
 
-    Pᵢ(t) = qᵢ Lᵢ(t),       P_*(t) = ∏ᵢ Mᵢ(t).
+Every coefficient converges to the corresponding coefficient of
 
-Multiplication of fixed-degree forms is polynomial in coefficients and hence
-continuous. Consequently the coefficient vectors converge to those of
+    L_{Jv}^m,       L_v q₁,…,L_v qₘ.                  (LIMIT)
 
-    Lq₁,…,Lqₘ,M^m.                         (LIMIT)
-
-All forms are in V_m. Use one fixed basis of V_m throughout; do not compare
-matrices in a t-dependent basis without also tracking its invertibility.
+For multiplication, each fixed coefficient is a finite sum of products of
+coefficients; induction gives convergence of the finite product. All
+coordinates are fixed throughout. Lean proves these statements directly for
+homogeneous binary polynomials, without choosing affine roots.
 
 ### DP4 — Independence at the boundary
 
-Let z be the zero of L in ℙ¹, and choose a nonzero homogeneous representative w
-of z. Because L and M are nonproportional, M(w) ≠ 0. Suppose
+Write v=(a,b) and take w=(-b,a). Evaluation gives L_v(w)=0 and
 
-    Σᵢ cᵢ Lqᵢ + c_* M^m = 0.
+    L_{Jv}(w)=|a|²+|b|² ≠ 0.
 
-Evaluating at w gives c_* M(w)^m = 0, so c_*=0. We then have
-L(Σᵢ cᵢqᵢ)=0. The binary polynomial ring is an integral domain and L≠0, so
-Σᵢ cᵢqᵢ=0. Core independence gives every cᵢ=0. Therefore (LIMIT) is independent.
-Since it consists of m+1 forms in the (m+1)-dimensional V_m, its coefficient
-matrix A₀ has nonzero determinant.
+In a relation c_* L_{Jv}^m + Σᵢ cᵢ L_v qᵢ=0, evaluation at w forces c_*=0.
+The polynomial ring is an integral domain and L_v≠0, so cancellation gives
+Σᵢ cᵢqᵢ=0. Core independence forces every cᵢ=0. Thus (LIMIT) is independent.
+This argument includes both pole cases; it does not assume two finite roots.
 
-### DP5 — Stability away from the determinant divisor
+### DP5 — Stability using a finite coefficient witness
 
-Let A(t) be the coefficient matrix of the forms in DP3. Then A(t)→A₀ and
-`det A₀ ≠ 0`. The determinant is continuous, and the complement of {0} is open.
-Hence `det A(t) ≠ 0` for all sufficiently small positive t. Equivalently there
-is a threshold after which `det A(1/R) ≠ 0` for all R. This is universal over the
-tail, not just a subsequence of good distances.
+Let S be the union of the supports of the finitely many forms in (LIMIT).
+Restriction to the coordinates in S is injective on their span: all other
+coefficients of every vector in that span are zero. The projected limiting
+family is therefore independent in the finite-dimensional vector space ℂ^S.
 
-### DP6 — Return to actual configurations
+The set of independent finite families in that normed space is open. By DP3,
+the projected F(R) converge to the projected (LIMIT), so they are independent
+for all sufficiently large R. Independence after projection implies
+independence of the full binary forms F(R).
 
-Increase the threshold so that R₀ > maxᵢ ‖aᵢ‖ and R₀ > 0. For R>R₀, Ru cannot
-equal a core point, because ‖Ru‖=R. The original core points are distinct by
-hypothesis. DP2's nonzero changes of lift representatives preserve independence,
-so the conclusion is C1 for the actual enlarged configuration. ∎
+This replaces the earlier square coefficient determinant argument in the
+implemented proof. No degree bound on the varying family is needed for this
+finite-witness lemma, and no coefficient truncation is assumed injective on
+the entire polynomial ring. The older determinant lemmas remain valid
+alternative components.
+
+### DP6 — Actual configurations and arbitrary lift choices
+
+Intersect the finitely many tail conditions: R>0, collision avoidance, local
+incidence, and independence from DP5. Restore the nonzero column scalars from
+DP3 to obtain independence of the constructed actual lift family.
+
+Finally, two nonzero spinors with equal Hopf image differ by a nonzero complex
+scalar. This is proved directly from the Hopf equations, including the pole
+case. Applying it separately to every directed edge shows that replacing a
+lift family rescales each point form by a product of nonzero scalars. Such
+column rescaling preserves independence. Thus every lift family of the actual
+enlarged configuration is independent. Extract R₀ from the common tail. ∎
 
 ## Algebraic-geometric interpretation
 
-For z = Z(L), multiplication and evaluation give an exact sequence
+For z=Z(L_v), multiplication and evaluation give
 
-    0 → H⁰(ℙ¹,O(m−1)) --·L→ H⁰(ℙ¹,O(m)) --ev_z→ O(m)|_z → 0.
+    0 → H⁰(ℙ¹,O(m−1)) --·L_v→ H⁰(ℙ¹,O(m)) --ev_z→ O(m)|_z → 0.
 
-The forms Lqᵢ give the kernel summand, and M^m gives the missing one-dimensional
-quotient because M(z)≠0. This is why the boundary matrix is nonsingular. In the
-product of coefficient projective spaces its limit avoids the determinant
-divisor. The nearby geometric family therefore also avoids that divisor.
+The forms L_v qᵢ span the kernel; L_{Jv}^m supplies the missing quotient
+direction. The boundary family avoids the determinant divisor. The formal
+proof implements the polynomial and linear algebra underlying this statement,
+not the sheaves or a scheme-level compactification. The geometric path uses
+norms and conjugation, so it is not claimed to be a complex algebraic morphism.
 
-The polynomial algebra of this argument is algebraic over ℂ. The path from
-Euclidean point configurations involves norms and conjugation: its continuity
-is not a claim that it is a complex algebraic morphism. Neither a scheme-level
-compactification nor this exact sequence as a sheaf theorem is implemented in
-Lean here; the formalized core uses polynomial evaluation and linear algebra.
+## Relation to planar cells
 
-## Return to the planar cells
-
-For a planar family choose real lifts and write coefficient vectors as rows of
-B(R) = A(R)ᵀ, matching the cell module's convention. Eventual nonvanishing of
-det A(R) gives eventual nonvanishing of det B(R). The checked obstruction
-identity then says every signed winner cone has zero lineality. Thus the
-spike extension also preserves pointedness of these cones for sufficiently
-large R, conditional on the missing geometric convergence bridge. Ordinary
-winner-label changes do not invalidate this conclusion; the obstruction is a
-common annihilator, not a tie between two labels.
+For real coefficient representatives, independence excludes any nonzero common
+dual annihilator. The existing checked obstruction theorem identifies this
+with pointedness of the signed winner cones. The integrated distant-point
+proof proceeds in complex binary forms and does not introduce a complex ± fan.
+An explicit real coefficient-matrix corollary connecting the new theorem to
+those particular cell definitions remains separate from the configuration
+C1 theorem proved here.
 
 ## English ↔ Lean ledger
 
-This table is maintained from actual theorem statements, including their
-hypotheses. A local checked component does not silently discharge its missing
-geometric inputs.
+| Obligation | Checked declaration |
+| --- | --- |
+| DP1: ray limit and collision avoidance | `ContinuousLift.exists_ray_lifts`; `DistantPoint.eventually_ray_avoids` |
+| DP2: local section, both poles, antipode | `ContinuousLift.exists_local_hopf_section`, `hopf_antipode`, `continuous_antipode` |
+| DP2: physical displacement scaling | `Configuration.hopf_sqrt_smul`; `DistantPoint.rayLift` |
+| DP3: actual point-form formulas/scalars | `DistantPoint.pointForm_extend_zero`, `pointForm_extend_succ`, `pointForm_rayLift` |
+| DP3: coefficient convergence | `GeometricLimit.coeff_tendsto_mul`, `coeff_tendsto_prod`, `coeff_tendsto_linearForm` |
+| DP4: homogeneous boundary independence | `GeometricLimit.boundary_independent` |
+| DP5: finite witness and eventual independence | `GeometricLimit.eventually_independent_of_coeff_tendsto`, `eventually_spike_independent_fin` |
+| DP6: arbitrary lifts and nonzero rescaling | `Configuration.linearIndependent_pointForm_iff`; `DistantPoint.independent_rayLift` |
+| Complete DP, actual configurations and universal lift choices | `DistantPoint.distant_point_extension` |
 
-| English obligation | Lean component | Scope |
-| --- | --- | --- |
-| DP1: normalized direction converges | `FarDirection.tendsto_direction_far` | Normalized direction of R • u − a converges to u as R → +∞. |
-| DP2: coherent local projective lift, antipodal factor, gauge comparison | Partial existing `PlanarLift` and `Configuration` lemmas | Local continuous complex sections and lift-choice comparison remain open formalization tasks. |
-| DP3: coefficientwise convergence of actual point forms in a fixed basis | No end-to-end theorem yet | Must connect finite products, degree/basis conventions, and the geometric lift family. |
-| DP4: limiting polynomial independence | `SpikeLimit.boundaryFamily_pow_independent` | Algebraic affine-chart version; does not itself identify a geometric limiting family. |
-| DP4: independence implies nonzero square coefficient determinant | `SpikeLimit.fin_cons_boundary_pow_det_ne_zero` | Independent n-polynomial core of degree < n and a ≠ b give a nonzero determinant for (X−b)^n and (X−a)qᵢ. |
-| DP5: convergent nonsingular limit implies eventual nonsingularity | `exists_threshold_det_ne_zero` | Takes matrix convergence and limit nonvanishing as explicit inputs. |
-| DP6: distinctness and comparison with the full C1 definition | `FarDirection.eventually_far_avoids_cluster` proves eventual collision avoidance | Gauge comparison and the final geometric DP theorem are not yet assembled. |
+## Corrections made through English/Lean comparison
 
-## Corrections enforced by the English/Lean comparison
-
-1. The distant-point assertion needs a **core independence hypothesis**. The
-   boundary argument cannot produce it from separation alone.
-2. An abstract independent family of polynomials is not automatically a square
-   coefficient basis: the degree bound and ambient dimension matter.
-3. A chosen lift can jump at a chart boundary. Use local projective sections
-   and prove invariance under nonzero rescaling, rather than assuming the
-   canonical square-root implementation is globally continuous.
-4. Stability requires convergence of matrices **in a fixed gauge and basis**.
-5. For the real cell interpretation, coefficient vectors are rows in `Cells`
-   but polynomial coefficients are columns in `Algebraic`; the transpose is
-   required when applying the pointedness theorem.
+- Keep the core independence hypothesis explicit; separation cannot supply it.
+- Distinguish the Euclidean radius in the Hopf formula from the product norm.
+- Use local sections, with both poles covered, instead of a global Hopf section.
+- Use homogeneous evaluation to avoid affine-root exclusions.
+- Use a fixed finite coefficient witness: the direct proof needs no degree
+  bound, whereas the alternative square determinant proof does.
+- Restore displacement-sized lifts and prove arbitrary-lift invariance before
+  asserting a configuration-level theorem.
 
 ## Provenance and interpretation of the ML observation
 
-Atiyah–Sutcliffe already describe factorization for separated clusters in §5 of
-[The Geometry of Point Particles](https://arxiv.org/pdf/hep-th/0105179), including
-an asymptotic correction to their energy. The proof above is a formulation of
-that boundary mechanism suitable for C1 and formalization, not a claim that
-cluster separation is newly discovered.
+Atiyah–Sutcliffe describe separated-cluster factorization in §5 of
+[The Geometry of Point Particles](https://arxiv.org/pdf/hep-th/0105179).
+This is a formalization of that boundary mechanism, not a novelty claim.
 
-The observation motivating this task was that learned/search-generated
-configurations often had one point much farther from the others. Keep that as
-an empirical observation about the previous experiment. Because the previous
-oracle had a sign/index bug, it does not yet establish that those samples are
-extremal for the true Atiyah determinant. It nevertheless identifies a useful
-geometric boundary stratum to understand and then test with a corrected oracle.
+The earlier spiky samples motivate studying this boundary stratum. Because the
+old oracle had a sign/index bug, those samples do not establish extremality for
+the true determinant. The theorem concerns sufficiently separated cores whose
+independence is known; it gives no quantitative assertion about those samples.

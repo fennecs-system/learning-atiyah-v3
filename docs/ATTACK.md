@@ -60,8 +60,8 @@ assuming their defining normals form a basis would simply restate C1.
 
 ## 3. Ordered milestones
 
-1. **Definition bridges.** General Hopf lift existence is proved. Prove projective
-   uniqueness of lifts; outgoing forms have degree n−1 and are compatible with
+1. **Definition bridges.** General Hopf lift existence and nonzero projective
+   uniqueness of lifts are proved. Prove that outgoing forms have degree n−1 and are compatible with
    the standard stereographic conventions. Connect forms to square coefficient
    matrices via an explicit basis.
 2. **Geometric baselines.** The geometric planar two-point case is proved. Next handle ordered
@@ -112,12 +112,23 @@ This proof project and the interpretability project have different success
 criteria. No training run, grokking result, or general conjecture proof is
 claimed by this repository.
 
-## 6. Distant-point boundary milestone
+## 6. Distant-point boundary milestone — completed conditional subcase
 
-Follow [DP1–DP6 in the English proof](proofs/DISTANT_POINT.md). The algebraic
-boundary family avoids the determinant divisor when the core already satisfies
-C1. Direction convergence, the boundary determinant, and openness are checked.
-Next construct local continuous complex lifts, prove gauge invariance, and
-identify the geometric coefficient limit. This conditional extension does not
-prove arbitrary cores or every finite spike length. For real coefficients the
-existing determinant-to-pointed-cells bridge then applies.
+[DP1–DP6 in the English proof](proofs/DISTANT_POINT.md) are now implemented by
+`DistantPoint.distant_point_extension`. Local continuous charts, arbitrary-lift
+gauge invariance, physical displacement scaling, coefficient convergence,
+homogeneous boundary independence, and tail extraction are all checked.
+
+The successful route uses a fixed finite coefficient witness and openness of
+independence. It avoids affine roots and does not need the earlier square
+coefficient determinant bridge. In algebraic-geometric language the boundary
+family lies off the determinant divisor; the underlying polynomial proof is
+formalized directly.
+
+The theorem assumes C1 for the fixed core, not for every configuration. It
+therefore extends known cores into a separated region but does not establish
+arbitrary cores, all finite spike lengths, or C2. Next research questions include
+quantitative separation bounds and multiple separated clusters. The explicit
+real-matrix link from this complex binary-form theorem to the existing planar
+cell definitions is a further corollary to formalize, not a missing hypothesis
+of the checked configuration theorem.

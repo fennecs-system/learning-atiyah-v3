@@ -9,3 +9,8 @@ import Atiyah.PlanarConfiguration
 import Atiyah.FarDirection
 import Atiyah.SpikeLimit
 import Atiyah.DeterminantStability
+
+import Atiyah.Gauge
+import Atiyah.ContinuousLift
+import Atiyah.GeometricLimit
+import Atiyah.DistantPoint

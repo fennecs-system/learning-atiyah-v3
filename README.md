@@ -4,8 +4,8 @@ A Lean 4 research project attacking the original Atiyah configuration conjecture
 (C1) through polynomial coefficients, dual incidence, and signed winner cones.
 
 **The general conjecture is not proved.** This repository contains checked
-reductions and small baselines. The missing geometric nonvanishing argument is
-explicit; no open theorem is admitted into the library.
+reductions, small baselines, and an end-to-end conditional distant-point theorem.
+The general geometric nonvanishing problem remains open; no open theorem is admitted into the library.
 
 ## Build and audit
 
@@ -56,26 +56,42 @@ The source proves this algebra; it does not implement scheme-level objects.
 | `Algebraic` | Coefficient matrices, determinant scaling, monomial/scaled-monomial baselines. This is not yet a geometric collinear proof. |
 
 The full 3D definition uses homogeneous binary forms and arbitrary Hopf lifts.
-It explicitly requires lift existence, avoiding a vacuous statement. Existence is proved. Independence of lift choices, the binary-form basis bridge
-to coefficient matrices, and the full identification with other standard conventions
-must still be completed before claiming an end-to-end formalization of those reductions
-for C1. The real finite signed-fan picture does not directly generalize to complex
+It explicitly requires lift existence, avoiding a vacuous statement. Existence
+and independence of lift choices are proved. The general binary-form basis
+bridge to coefficient matrices and identification with other standard
+stereographic conventions remain separate tasks; the distant-point theorem
+works directly with these binary forms. The real finite signed-fan picture does not directly generalize to complex
 absolute values, which involve continuous phases.
 
 ## Distant-point subcase
 
-The [formal English proof](docs/proofs/DISTANT_POINT.md) shows: if a fixed core
-satisfies C1, adding a point sufficiently far along a fixed ray preserves C1.
-Lean checks direction convergence, independence and nonzero determinant of the
-boundary polynomial family, and determinant stability. The continuous lift,
-gauge, and geometric coefficient-convergence bridges remain to be formalized;
-the complete geometric theorem is not yet checked end to end.
+The [formal English proof](docs/proofs/DISTANT_POINT.md) and the checked theorem
+[`DistantPoint.distant_point_extension`](Atiyah/DistantPoint.lean) establish:
+
+> If a fixed core has independent Atiyah point forms, adding one point
+> sufficiently far along any fixed nonzero ray preserves independence.
+
+The conclusion gives actual distinct points, existence of displacement Hopf
+lifts, and independence for **every** lift family, on a single tail R > R₀.
+This is end-to-end for the advertised conditional subcase. It does not prove
+independence of an unknown core, give an effective threshold, cover every
+finite spike length, or establish C2.
 
 | Module | Checked content |
 | --- | --- |
-| `FarDirection` | Direction convergence along a ray and eventual avoidance of a finite core. |
-| `SpikeLimit` | Evaluation/cancellation proof of boundary independence, with degree bounds giving a nonzero square coefficient determinant. |
-| `DeterminantStability` | Eventual determinant nonvanishing under matrix convergence, a real threshold, and the corresponding real signed-cell consequence. |
+| `FarDirection` | Normalized direction convergence and eventual avoidance of a finite core. |
+| `SpikeLimit` | Affine polynomial boundary independence and square determinant certificates. |
+| `DeterminantStability` | Determinant openness and a real signed-cell consequence. |
+| `Gauge` | Nonzero Hopf lift proportionality, arbitrary-lift invariance, physical scaling. |
+| `ContinuousLift` | Local continuous sections at every nonzero displacement, both poles, antipodal factors, convergent ray lifts. |
+| `GeometricLimit` | Homogeneous boundary independence, coefficient convergence, and openness via finite coefficient witnesses. |
+| `DistantPoint` | Actual enlarged configurations and the complete conditional distant-point theorem. |
+
+The integrated proof uses homogeneous forms and a finite coefficient witness,
+so it needs neither an affine-root chart nor a degree/basis conversion.
+Independent [mathematical](docs/reviews/DISTANT_POINT_MATH.md) and
+[kernel/statement](docs/reviews/DISTANT_POINT_KERNEL.md) reviews record the
+acceptance criteria and results.
 
 ## Agent workflow
 
