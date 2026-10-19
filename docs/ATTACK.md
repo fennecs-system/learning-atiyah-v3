@@ -1,10 +1,13 @@
 # Proof attack through cells and the determinant divisor
 
-Status update, 2026-10-19: [Eickhoff v3](https://zenodo.org/records/23024340)
-claims counterexamples to universal C1. The project is auditing this claim.
-Treat the universal routes below as research hypotheses, not an assumption that
-C1 is true. Conditional cluster theorems remain meaningful. See the independent
-research and review reports for objections and reproducible checks.
+Status update, 2026-10-19: the m=1, 84-point specialization of
+[Eickhoff v3](https://zenodo.org/records/23024340) is now formalized as
+`SingularCounterexample.not_C1_84`. The universal C1 assertion is false for
+this project's incidence-based definition, including its real planar slice.
+The universal proof routes below are retained as historical research
+hypotheses, not active claims that C1 holds. Conditional separation theorems
+remain valid. See [the complete proof ledger](proofs/SINGULAR_FAMILY.md) and
+[the simplified explanation](SINGULAR_EXPLAINED.md).
 
 ## 1. The algebraic-geometric formulation
 

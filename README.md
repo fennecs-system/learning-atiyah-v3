@@ -4,16 +4,23 @@ A Lean 4 research project studying Atiyah configuration independence (C1)
 through polynomial coefficients, dual incidence, signed winner cones, and
 conditional separation theorems.
 
-**Research status correction (2026-10-19):** Jan Eickhoff's September 2026
-preprint [Singular Atiyah Configurations](https://zenodo.org/records/23024340)
-claims counterexamples to general C1, including planar configurations. This
-project has not yet formally verified those counterexamples. Earlier statements
-here that general C1 remained open missed that preprint. The conditional
-separation theorems are compatible with its claim.
+**The 84-point singular specialization is formalized in Lean.** The theorem
+[`SingularCounterexample.not_C1_84`](Atiyah/SingularCounterexample.lean) proves
+`¬ Configuration.C1 84`. Its companion existence theorem supplies an actual
+distinct configuration with dependent complex point forms for every Hopf lift
+family, and explicitly includes lift existence. The witness occurs strictly
+inside the specified planar path, not at its colliding endpoints.
 
-**The general conjecture is not proved by this project.** This repository contains checked
-reductions, small baselines, and an end-to-end conditional distant-point theorem.
-Universal nonvanishing is now a claim to test against the reported counterexamples; no open theorem is admitted into the library.
+This verifies the m=1, 84-point specialization of Jan Eickhoff's September 2026
+preprint [Singular Atiyah Configurations](https://zenodo.org/records/23024340).
+It does not formalize the preprint's full arbitrary-size family. Earlier
+statements here that general C1 remained open missed that preprint; the
+conditional distant-point and two-cluster theorems remain compatible with the
+counterexample.
+
+Read the [simplified explanation](docs/SINGULAR_EXPLAINED.md),
+[formal English proof and correspondence ledger](docs/proofs/SINGULAR_FAMILY.md),
+and [independent statement review](docs/reviews/SINGULAR_REVIEW.md).
 
 ## Build and audit
 
@@ -44,8 +51,8 @@ s · <v, ρᵢ> ≥ <v, ρⱼ> and s · <v, ρᵢ> ≥ -<v, ρⱼ>   for every j
 
 Their common lineality space is the annihilator of all coefficient vectors.
 Thus the nonsingularity problem is exactly the assertion that these cones are
-pointed. The equivalence is proved; geometric pointedness for all configurations
-is still open here.
+pointed. The equivalence is proved. The singular construction shows that universal
+geometric pointedness cannot hold.
 
 Independent rescaling of polynomial columns multiplies the determinant by the
 product of the scales. Its vanishing locus therefore has the expected projective
@@ -65,10 +72,10 @@ The source proves this algebra; it does not implement scheme-level objects.
 
 The full 3D definition uses homogeneous binary forms and arbitrary Hopf lifts.
 It explicitly requires lift existence, avoiding a vacuous statement. Existence
-and independence of lift choices are proved. The general binary-form basis
-bridge to coefficient matrices and identification with other standard
-stereographic conventions remain separate tasks; the distant-point theorem
-works directly with these binary forms. The real finite signed-fan picture does not directly generalize to complex
+and independence of lift choices are proved. The `HomogeneousBridge` module now proves the fixed-degree binary-form
+dehomogenization bridge. The singular-family modules explicitly reconcile
+the real polynomial sign convention with these homogeneous forms. The
+distant-point theorem works directly with binary forms. The real finite signed-fan picture does not directly generalize to complex
 absolute values, which involve continuous phases.
 
 ## Distant-point subcase
@@ -121,10 +128,22 @@ Read [the simplified explanation](docs/SEPARATION_EXPLAINED.md),
 `ReflectionObstruction` checks a small matrix obstruction to one raw-determinant
 reflection-positivity proposal; it does not rule out every QFT construction.
 
-For the recent counterexample claim, run `python scripts/check_boundary_certificate.py`.
-This dependency-free exact interval calculation certifies the sign of a specific
-boundary expression at 84 points. It is not a Lean proof or a complete check
-of the geometric path and interior singular configuration.
+## Singular configuration verification
+
+The proof chain is geometry → explicit polynomial rows → exact boundary
+elimination → kernel-checked radical arithmetic → an interior determinant
+zero → dependence of the actual complex homogeneous point forms.
+
+`SingularCertificate.computedQuad_eq` checks the complete integer calculation
+using `decide +kernel`. `SingularCertificateBridge` proves that the list
+algorithm is the polynomial elimination used by `SingularElimination`.
+`SingularBoundary.pathDet_one_negative` discharges the endpoint sign;
+`SingularCounterexample` applies it to the geometric existence theorem.
+There is no unproved sign hypothesis in the final theorems.
+
+The Python scripts `scripts/check_boundary_certificate.py` and
+`scripts/check_boundary_quad.py` are supplementary reproducibility checks.
+Neither script is a premise of the Lean proof.
 
 ## Agent workflow
 

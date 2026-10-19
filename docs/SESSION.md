@@ -138,3 +138,36 @@ recursion is a mathematical iteration principle; no tree constructor or uniform
 scale ratio has been formalized yet. Next priorities are exact geometric
 verification of the reported singular family and restricted nonvanishing/
 quantitative spectral bounds, rather than assuming universal positivity.
+
+## 2026-10-19 — Formal verification of the reported singular specialization
+
+The m=1 specialization with a=52, b=30, R=32 is now checked end to end.
+`SingularCounterexample.not_C1_84` proves `¬ Configuration.C1 84` with no
+hypotheses. The companion `exists_singular_planar_config` supplies actual
+injective planar points, nonempty physical Hopf lifts, and dependent complex
+point forms for every lift family. `exists_singular_parameter` locates the
+witness strictly inside the explicit parameter interval, excluding the
+colliding endpoints.
+
+The proof includes the physical lift and normalized-row identities, the
+common variable sign change, fixed-degree homogeneous dehomogenization,
+exact polynomial elimination, and a kernel-checked computation in
+Z[sqrt(2),sqrt(962)]. The list-based arithmetic is proved to implement that
+polynomial elimination. Scaling both special rows by 31 multiplies the
+coefficient determinant by 961. The actual endpoint determinant is negative,
+while the opposite endpoint determinant is 1. The real intermediate-value
+theorem then gives a singular interior configuration.
+
+Validation: `scripts/check.sh` completed successfully; its transitive audit
+passed for all **621 public project declarations**, allowing only `propext`,
+`Classical.choice`, and `Quot.sound`. Two reviewers separately imported the
+final theorems and checked their statements and axiom lists. No `sorry`,
+`admit`, custom axiom, `native_decide`, or modified conjecture definition was
+introduced. The exact computation uses `decide +kernel`. The final result
+is imported by the default `Atiyah` target and normal GitHub CI.
+
+The proof and simplified explanation are in `docs/proofs/SINGULAR_FAMILY.md`
+and `docs/SINGULAR_EXPLAINED.md`. This verifies one concrete 84-point
+specialization, not the preprint's complete arbitrary-cardinality family.
+The existing distant-point and two-cluster results remain conditional on
+independent cores and are compatible with this counterexample.

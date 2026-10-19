@@ -20,3 +20,6 @@ import Atiyah.TwoClusterGeometry
 import Atiyah.TwoClusterLift
 import Atiyah.TwoCluster
 import Atiyah.ReflectionObstruction
+
+import Atiyah.SingularDivision
+import Atiyah.SingularCounterexample
